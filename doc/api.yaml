@@ -529,7 +529,6 @@ paths:
                   nullable: true
               required:
                 - name
-                - year
       responses:
         201:
           description: Almub is created
@@ -590,7 +589,6 @@ paths:
                   nullable: true
               required:
                 - name
-                - year
       responses:
         200:
           description: The album has been updated.
@@ -653,7 +651,6 @@ paths:
                   type: boolean
               required:
                 - name
-                - grammy
       responses:
         201:
           description: Successful operation
@@ -709,7 +706,6 @@ paths:
                   type: boolean
               required:
                 - name
-                - grammy
       responses:
         200:
           description: The artist has been updated.
