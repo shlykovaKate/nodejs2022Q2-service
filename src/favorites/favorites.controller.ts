@@ -19,7 +19,13 @@ export class FavoritesController {
     if (!uuidValidate(id)) {
       throw new BadRequestException("Track's Id is invalid (not uuid)");
     }
-    return this.favoritesService.update(id, 'track');
+    const index = this.favoritesService.findAll().tracks.findIndex((track) => track.id === id);
+    if (index === -1) {
+      this.favoritesService.update(id, 'track');
+      return `Track with ${id} has been added`;
+    } else {
+      return `Track with ${id} has AlREADY been added`;
+    }
   }
 
   @Post('/album/:id')
@@ -27,7 +33,13 @@ export class FavoritesController {
     if (!uuidValidate(id)) {
       throw new BadRequestException("Album's Id is invalid (not uuid)");
     }
-    return this.favoritesService.update(id, 'album');
+    const index = this.favoritesService.findAll().albums.findIndex((album) => album.id === id);
+    if (index === -1) {
+      this.favoritesService.update(id, 'album');
+      return `Album with ${id} has been added`;
+    } else {
+      return `Album with ${id} has AlREADY been added`;
+    }
   }
 
   @Post('/artist/:id')
@@ -35,7 +47,13 @@ export class FavoritesController {
     if (!uuidValidate(id)) {
       throw new BadRequestException("Artist's Id is invalid (not uuid)");
     }
-    return this.favoritesService.update(id, 'artist');
+    const index = this.favoritesService.findAll().artists.findIndex((artist) => artist.id === id);
+    if (index === -1) {
+      this.favoritesService.update(id, 'artist');
+      return `Artist with ${id} has been added`;
+    } else {
+      return `Artist with ${id} has AlREADY been added`;
+    }
   }
 
   @Get()
@@ -49,7 +67,8 @@ export class FavoritesController {
     if (!uuidValidate(id)) {
       throw new BadRequestException("Track's Id is invalid (not uuid)");
     }
-    return this.favoritesService.remove(id, 'track');
+    this.favoritesService.remove(id, 'track');
+    return `Track with ${id} has been removed`;
   }
 
   @Delete('/album/:id')
@@ -58,7 +77,8 @@ export class FavoritesController {
     if (!uuidValidate(id)) {
       throw new BadRequestException("Album's Id is invalid (not uuid)");
     }
-    return this.favoritesService.remove(id, 'album');
+    this.favoritesService.remove(id, 'album');
+    return `Album with ${id} has been removed`;
   }
 
   @Delete('/artist/:id')
@@ -67,6 +87,7 @@ export class FavoritesController {
     if (!uuidValidate(id)) {
       throw new BadRequestException("Artist's Id is invalid (not uuid)");
     }
-    return this.favoritesService.remove(id, 'artist');
+    this.favoritesService.remove(id, 'artist');
+    return `Artist with ${id} has been removed`;
   }
 }
