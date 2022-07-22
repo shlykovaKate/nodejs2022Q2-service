@@ -1,0 +1,52 @@
+
+version: '3.0'
+
+services:
+  shlykova-server:
+    container_name: shlykova-server
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    volumes:
+      - type: bind
+        source: ./src
+        target: /home/server/src
+      - /home/server/node_modules
+      - ./logs:/home/server/logs
+    ports:
+      - ${PORT}:${PORT}
+    command: npm run start
+    depends_on:
+      - shlykova-db
+    restart: always
+    networks:
+      - app-net
+  shlykova-db:
+    container_name: shlykova-db
+    build:
+      context: ./db
+      dockerfile: Dockerfile
+    networks:
+      - app-net
+    env_file:
+      - .env
+    environment:
+      PG_DATA: /var/lib/postgresql/data
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - ${POSTGRESS_PORT}:${POSTGRESS_PORT}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    restart: always
+
+volumes:
+  pgdata:
+  logs:
+
+networks:
+  app-net:
+    name: app-net
