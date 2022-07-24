@@ -6,6 +6,7 @@ import { SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
 import { readFile } from 'fs/promises';
 import 'dotenv/config';
+import "reflect-metadata";
 
 async function bootstrap() {
   const PORT = process.env.PORT || 4000;
