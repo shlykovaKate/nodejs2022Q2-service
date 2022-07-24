@@ -1,17 +1,24 @@
 import { Exclude } from 'class-transformer';
+import { Entity, Column, PrimaryGeneratedColumn } from "typeorm";
 
+@Entity('user')
 export class User {
+  @PrimaryGeneratedColumn('uuid')
   id: string;
+
+  @Column()
   login: string;
 
+  @Column()
   @Exclude()
   password: string;
 
+  @Column()
   version: number;
-  createdAt: number;
-  updatedAt: number;
 
-  constructor(partial: Partial<User>) {
-    Object.assign(this, partial);
-  }
+  @Column('bigint')
+  createdAt: number;
+
+  @Column('bigint')
+  updatedAt: number;
 }

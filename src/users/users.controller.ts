@@ -17,12 +17,13 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdatePasswordDto } from './dto/update-password.dto';
 import { User } from './entities/user.entity';
 import { validate as uuidValidate } from 'uuid';
+import { DataSource } from 'typeorm';
 
 @ApiTags('Пользователи')
 @Controller('/user')
 @UseInterceptors(ClassSerializerInterceptor)
 export class UsersController {
-  constructor(private userService: UsersService) {}
+  constructor(private userService: UsersService, private dataSource: DataSource) {}
 
   @ApiOperation({ summary: 'Cоздание пользователя' })
   @ApiResponse({ status: 201, type: User })
