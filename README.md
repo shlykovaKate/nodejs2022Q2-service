@@ -54,7 +54,8 @@ For more information about OpenAPI/Swagger please visit https://swagger.io/.
 ## NPM script for vulnerabilities scanning
 
 ```
-npm run docker:scan
+npm run docker:scan:app
+npm run docker:scan:db
 ```
 
 ## Testing

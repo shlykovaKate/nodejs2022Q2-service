@@ -22,7 +22,8 @@
     "docker:build": "docker-compose build",
     "docker:up": "docker-compose up -d",
     "docker:down": "docker-compose down",
-    "docker:scan": "docker scan nodejs2022q2-service_shlykova-server"
+    "docker:scan:app": "docker scan nodejs2022q2-service_shlykova-server",
+    "docker:scan:db": "docker scan nodejs2022q2-service_shlykova-db"
   },
   "dependencies": {
     "@nestjs/common": "^8.0.0",
