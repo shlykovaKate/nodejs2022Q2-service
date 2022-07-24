@@ -14,10 +14,11 @@ import { AlbumsService } from './albums.service';
 import { CreateAlbumDto } from './dto/create-album.dto';
 import { UpdateAlbumDto } from './dto/update-album.dto';
 import { validate as uuidValidate } from 'uuid';
+import { DataSource } from 'typeorm';
 
 @Controller('album')
 export class AlbumsController {
-  constructor(private readonly albumsService: AlbumsService) {}
+  constructor(private albumsService: AlbumsService, private dataSource: DataSource) {}
 
   @Post()
   create(@Body() createAlbumDto: CreateAlbumDto) {
