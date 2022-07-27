@@ -71,6 +71,6 @@ export class UsersController {
     if (!uuidValidate(id)) {
       throw new BadRequestException("User's Id is invalid (not uuid)");
     }
-    this.userService.remove(id);
+    return this.userService.remove(id);
   }
 }
