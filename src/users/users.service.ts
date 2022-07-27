@@ -35,11 +35,8 @@ export class UsersService {
 
   async findOne(id: string): Promise<User> {
     const user = await this.usersRepository.findOneBy({ id });
-    if (!user) {
-      throw new NotFoundException('User not found');
-    } else {
-      return user;
-    }
+    if (!user) throw new NotFoundException('User not found');   
+    return user;
   }
 
   async update(id: string, updatePasswordDto: UpdatePasswordDto): Promise<User> {
