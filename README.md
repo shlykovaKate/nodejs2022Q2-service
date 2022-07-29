@@ -10,6 +10,7 @@
 ```
 git clone https://github.com/shlykovaKate/nodejs2022Q2-service.git
 ```
+
 ## Running application in docker
 
 ```
@@ -23,6 +24,13 @@ in your browser OpenAPI documentation by typing http://localhost:4000/doc/.
 
 ```
 npm run docker:down
+```
+
+## NPM script for vulnerabilities scanning
+
+```
+npm run docker:scan:app
+npm run docker:scan:db
 ```
 
 ## Testing
