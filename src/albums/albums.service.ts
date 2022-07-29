@@ -15,12 +15,12 @@ import { InjectRepository } from '@nestjs/typeorm';
 @Injectable()
 export class AlbumsService {
   constructor(
-    @Inject(forwardRef(() => TracksService))
-    private tracksService: TracksService,
     @Inject(forwardRef(() => FavoritesService))
     private favoritesService: FavoritesService,
     @InjectRepository(Album)
     private albumsRepository: Repository<Album>,
+    @Inject(forwardRef(() => TracksService))
+    private tracksService: TracksService,
   ) {}
 
   async create(createAlbumDto: CreateAlbumDto): Promise<Album> {
@@ -36,27 +36,16 @@ export class AlbumsService {
   }
 
   async update(id: string, updateAlbumDto: UpdateAlbumDto): Promise<Album> {
-    const album =  await this.albumsRepository.findOneBy({ id });
-    if (!album) throw new NotFoundException('User not found');
-    Object.assign(album, UpdateAlbumDto);
+    const album = await this.albumsRepository.findOneBy({ id });
+    if (!album) throw new NotFoundException('Album not found');
+    Object.assign(album, updateAlbumDto);
     return await this.albumsRepository.save(album);
   }
 
-  async remove(id: string):Promise<void> {
-    const album =  await this.albumsRepository.findOneBy({ id });
-    if (!album) throw new NotFoundException('User not found');
+  async remove(id: string): Promise<void> {
+    const album = await this.albumsRepository.findOneBy({ id });
+    if (!album) throw new NotFoundException('Album not found');
     await this.albumsRepository.delete(id);
-    /*
-    const tracks = this.tracksService.findAll();
-    tracks.forEach((track) => {
-      if (track.albumId === id) {
-        this.tracksService.update(track.id, {
-          albumId: null,
-        });
-      }
-    });
-
-    this.favoritesService.remove(id, 'album');
-    return 'Album has been removed';*/
+    await this.favoritesService.remove(id, 'album');
   }
 }

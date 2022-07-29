@@ -18,7 +18,10 @@ import { DataSource } from 'typeorm';
 
 @Controller('album')
 export class AlbumsController {
-  constructor(private albumsService: AlbumsService, private dataSource: DataSource) {}
+  constructor(
+    private albumsService: AlbumsService,
+    private dataSource: DataSource,
+  ) {}
 
   @Post()
   create(@Body() createAlbumDto: CreateAlbumDto) {
@@ -31,11 +34,11 @@ export class AlbumsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string) {
     if (!uuidValidate(id)) {
       throw new BadRequestException("Album's Id is invalid (not uuid)");
     }
-    const album = this.albumsService.findOne(id);
+    const album = await this.albumsService.findOne(id);
     if (!album) {
       throw new NotFoundException('Album not found');
     }
