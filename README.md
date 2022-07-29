@@ -11,27 +11,27 @@
 git clone https://github.com/shlykovaKate/nodejs2022Q2-service.git
 ```
 
-## Installing NPM modules
+## Running application in docker
 
 ```
-npm install
+1) git checkout postgres
+2) npm run docker:up
 ```
-
-## Copy and rename env.example to .env
-
-```
-If needed apply changes in .env file.
-```
-
-## Running application
-
-```
-npm start
-```
-
 After starting the app on port (4000 as default) you can open
 in your browser OpenAPI documentation by typing http://localhost:4000/doc/.
-For more information about OpenAPI/Swagger please visit https://swagger.io/.
+
+## Stopping application in docker
+
+```
+npm run docker:down
+```
+
+## NPM script for vulnerabilities scanning
+
+```
+npm run docker:scan:app
+npm run docker:scan:db
+```
 
 ## Testing
 
@@ -47,10 +47,6 @@ npm run test
 
 ```
 npm run lint
-```
-
-```
-npm run format
 ```
 
 ### Debugging in VSCode

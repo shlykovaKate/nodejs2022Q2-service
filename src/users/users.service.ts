@@ -7,59 +7,62 @@ import {
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdatePasswordDto } from './dto/update-password.dto';
 import { User } from './entities/user.entity';
-import * as uuid from 'uuid';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class UsersService {
-  private users: User[] = [];
+  constructor(
+    @InjectRepository(User)
+    private usersRepository: Repository<User>,
+  ) {}
 
-  create(createUserDto: CreateUserDto): User {
-    const count = this.users.push({
-      ...createUserDto,
-      id: uuid.v4(),
-      version: 1,
-      createdAt: Date.now(),
-      updatedAt: Date.now(),
-    });
-    return new User({ ...this.users[count - 1] });
+  async create(createUserDto: CreateUserDto): Promise<User> {
+    const user = new User();
+
+    user.login = createUserDto.login;
+    user.password = createUserDto.password;
+    user.version = 1;
+    user.createdAt = Date.now();
+    user.updatedAt = Date.now();
+
+    return await this.usersRepository.save(user);
   }
 
-  findAll(): User[] {
-    return this.users.map((user) => new User({ ...user }));
+  findAll(): Promise<User[]> {
+    return this.usersRepository.find();
   }
 
-  findOne(id: string): User {
-    const user = this.users.find((user) => user.id === id);
-    if (!user) {
-      throw new NotFoundException('User not found');
-    } else {
-      return new User({ ...user });
-    }
+  async findOne(id: string): Promise<User> {
+    const user = await this.usersRepository.findOneBy({ id });
+    if (!user) throw new NotFoundException('User not found');
+    return user;
   }
 
-  update(id: string, updatePasswordDto: UpdatePasswordDto): User {
-    const i = this.users.findIndex((user) => user.id == id);
-    if (i === -1) throw new NotFoundException('User not found');
-    if (this.users[i].password !== updatePasswordDto.oldPassword) {
+  async update(
+    id: string,
+    updatePasswordDto: UpdatePasswordDto,
+  ): Promise<User> {
+    const user = await this.usersRepository.findOneBy({ id });
+    if (!user) throw new NotFoundException('User not found');
+    if (user.password !== updatePasswordDto.oldPassword) {
       throw new HttpException(
         'Введите правильно старый пароль',
         HttpStatus.FORBIDDEN,
       );
     }
-    this.users[i] = {
-      ...this.users[i],
+
+    Object.assign(user, {
       password: updatePasswordDto.newPassword,
-      version: this.users[i].version + 1,
+      version: user.version + 1,
       updatedAt: Date.now(),
-    };
-    return new User({ ...this.users[i] });
+    });
+    return await this.usersRepository.save(user);
   }
 
-  remove(id: string) {
-    const i = this.users.findIndex((user) => user.id == id);
-    if (i === -1) throw new NotFoundException('User not found');
-    const user = this.users[i];
-    this.users.splice(i, 1);
-    return user;
+  async remove(id: string): Promise<void> {
+    const user = await this.usersRepository.findOneBy({ id });
+    if (!user) throw new NotFoundException('User not found');
+    await this.usersRepository.delete(id);
   }
 }
