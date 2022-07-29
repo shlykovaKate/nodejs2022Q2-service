@@ -30,11 +30,11 @@ export class ArtistsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string) {
     if (!uuidValidate(id)) {
       throw new BadRequestException("Artist's Id is invalid (not uuid)");
     }
-    const artist = this.artistsService.findOne(id);
+    const artist = await this.artistsService.findOne(id);
     if (!artist) {
       throw new NotFoundException('Artist not found');
     }
