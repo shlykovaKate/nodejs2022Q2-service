@@ -20,7 +20,10 @@ import { DataSource } from 'typeorm';
 @Controller('/user')
 @UseInterceptors(ClassSerializerInterceptor)
 export class UsersController {
-  constructor(private userService: UsersService, private dataSource: DataSource) {}
+  constructor(
+    private userService: UsersService,
+    private dataSource: DataSource,
+  ) {}
 
   @UseInterceptors(ClassSerializerInterceptor)
   @Post()

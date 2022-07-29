@@ -35,12 +35,15 @@ export class UsersService {
 
   async findOne(id: string): Promise<User> {
     const user = await this.usersRepository.findOneBy({ id });
-    if (!user) throw new NotFoundException('User not found');   
+    if (!user) throw new NotFoundException('User not found');
     return user;
   }
 
-  async update(id: string, updatePasswordDto: UpdatePasswordDto): Promise<User> {
-    const user =  await this.usersRepository.findOneBy({ id });
+  async update(
+    id: string,
+    updatePasswordDto: UpdatePasswordDto,
+  ): Promise<User> {
+    const user = await this.usersRepository.findOneBy({ id });
     if (!user) throw new NotFoundException('User not found');
     if (user.password !== updatePasswordDto.oldPassword) {
       throw new HttpException(
@@ -52,7 +55,7 @@ export class UsersService {
     Object.assign(user, {
       password: updatePasswordDto.newPassword,
       version: user.version + 1,
-      updatedAt: Date.now()
+      updatedAt: Date.now(),
     });
     return await this.usersRepository.save(user);
   }

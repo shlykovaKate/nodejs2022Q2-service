@@ -1,5 +1,5 @@
 import { Exclude, Transform } from 'class-transformer';
-import { Entity, Column, PrimaryGeneratedColumn } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('user')
 export class User {
@@ -16,11 +16,11 @@ export class User {
   @Column()
   version: number;
 
-  @Column({type: 'bigint'/*, nullable: true, default: null */})
+  @Column({ type: 'bigint' /*, nullable: true, default: null */ })
   @Transform(({ value }) => parseInt(value))
   createdAt: number;
 
-  @Column({type: 'bigint'/*, nullable: true, default: null */})
+  @Column({ type: 'bigint' /*, nullable: true, default: null */ })
   @Transform(({ value }) => parseInt(value))
   updatedAt: number;
 }
