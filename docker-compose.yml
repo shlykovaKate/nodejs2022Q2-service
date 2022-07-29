@@ -17,7 +17,7 @@ services:
       - ./logs:/home/server/logs
     ports:
       - ${PORT}:${PORT}
-    command: npm run start
+    command: npm run start:dev
     depends_on:
       - shlykova-db
     restart: always
