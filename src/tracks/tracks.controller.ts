@@ -14,10 +14,14 @@ import { TracksService } from './tracks.service';
 import { CreateTrackDto } from './dto/create-track.dto';
 import { UpdateTrackDto } from './dto/update-track.dto';
 import { validate as uuidValidate } from 'uuid';
+import { DataSource } from 'typeorm';
 
 @Controller('track')
 export class TracksController {
-  constructor(private readonly tracksService: TracksService) {}
+  constructor(
+    private readonly tracksService: TracksService,
+    private dataSource: DataSource,
+  ) {}
 
   @Post()
   create(@Body() createTrackDto: CreateTrackDto) {
@@ -30,11 +34,11 @@ export class TracksController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string) {
     if (!uuidValidate(id)) {
       throw new BadRequestException("Track's Id is invalid (not uuid)");
     }
-    const track = this.tracksService.findOne(id);
+    const track = await this.tracksService.findOne(id);
     if (!track) {
       throw new NotFoundException('Track not found');
     }
@@ -55,6 +59,6 @@ export class TracksController {
     if (!uuidValidate(id)) {
       throw new BadRequestException("Track's Id is invalid (not uuid)");
     }
-    this.tracksService.remove(id);
+    return this.tracksService.remove(id);
   }
 }
