@@ -9,38 +9,44 @@ import {
   HttpCode,
   Put,
   NotFoundException,
+  UseGuards,
 } from '@nestjs/common';
 import { AlbumsService } from './albums.service';
 import { CreateAlbumDto } from './dto/create-album.dto';
 import { UpdateAlbumDto } from './dto/update-album.dto';
 import { validate as uuidValidate } from 'uuid';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Controller('album')
 export class AlbumsController {
-  constructor(private readonly albumsService: AlbumsService) {}
+  constructor(private albumsService: AlbumsService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Post()
   create(@Body() createAlbumDto: CreateAlbumDto) {
     return this.albumsService.create(createAlbumDto);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get()
   findAll() {
     return this.albumsService.findAll();
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string) {
     if (!uuidValidate(id)) {
       throw new BadRequestException("Album's Id is invalid (not uuid)");
     }
-    const album = this.albumsService.findOne(id);
+    const album = await this.albumsService.findOne(id);
     if (!album) {
       throw new NotFoundException('Album not found');
     }
     return album;
   }
 
+  @UseGuards(JwtAuthGuard)
   @Put(':id')
   update(@Param('id') id: string, @Body() updateAlbumDto: UpdateAlbumDto) {
     if (!uuidValidate(id)) {
@@ -49,6 +55,7 @@ export class AlbumsController {
     return this.albumsService.update(id, updateAlbumDto);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   @HttpCode(204)
   remove(@Param('id') id: string) {
