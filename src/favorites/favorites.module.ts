@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AlbumsModule } from 'src/albums/albums.module';
 import { TracksModule } from 'src/tracks/tracks.module';
 import { ArtistsModule } from 'src/artists/artists.module';
+import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
   controllers: [FavoritesController],
@@ -17,6 +18,7 @@ import { ArtistsModule } from 'src/artists/artists.module';
     AlbumsModule,
     forwardRef(() => TracksModule),
     ArtistsModule,
+    AuthModule
   ],
   exports: [FavoritesService],
 })
