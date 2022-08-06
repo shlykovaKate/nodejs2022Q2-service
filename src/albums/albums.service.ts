@@ -7,7 +7,6 @@ import {
 import { CreateAlbumDto } from './dto/create-album.dto';
 import { UpdateAlbumDto } from './dto/update-album.dto';
 import { Album } from './entities/album.entity';
-import { TracksService } from 'src/tracks/tracks.service';
 import { FavoritesService } from 'src/favorites/favorites.service';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -18,9 +17,7 @@ export class AlbumsService {
     @Inject(forwardRef(() => FavoritesService))
     private favoritesService: FavoritesService,
     @InjectRepository(Album)
-    private albumsRepository: Repository<Album>,
-    @Inject(forwardRef(() => TracksService))
-    private tracksService: TracksService,
+    private albumsRepository: Repository<Album>
   ) {}
 
   async create(createAlbumDto: CreateAlbumDto): Promise<Album> {
@@ -45,7 +42,9 @@ export class AlbumsService {
   async remove(id: string): Promise<void> {
     const album = await this.albumsRepository.findOneBy({ id });
     if (!album) throw new NotFoundException('Album not found');
-    await this.albumsRepository.delete(id);
-    await this.favoritesService.remove(id, 'album');
+    await Promise.all([
+      this.albumsRepository.delete(id),
+      this.favoritesService.remove(id, 'album')
+    ]);
   }
 }

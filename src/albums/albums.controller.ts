@@ -9,30 +9,33 @@ import {
   HttpCode,
   Put,
   NotFoundException,
+  UseGuards,
 } from '@nestjs/common';
 import { AlbumsService } from './albums.service';
 import { CreateAlbumDto } from './dto/create-album.dto';
 import { UpdateAlbumDto } from './dto/update-album.dto';
 import { validate as uuidValidate } from 'uuid';
-import { DataSource } from 'typeorm';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Controller('album')
 export class AlbumsController {
   constructor(
-    private albumsService: AlbumsService,
-    private dataSource: DataSource,
+    private albumsService: AlbumsService
   ) {}
 
+  @UseGuards(JwtAuthGuard)
   @Post()
   create(@Body() createAlbumDto: CreateAlbumDto) {
     return this.albumsService.create(createAlbumDto);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get()
   findAll() {
     return this.albumsService.findAll();
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
   async findOne(@Param('id') id: string) {
     if (!uuidValidate(id)) {
@@ -45,6 +48,7 @@ export class AlbumsController {
     return album;
   }
 
+  @UseGuards(JwtAuthGuard)
   @Put(':id')
   update(@Param('id') id: string, @Body() updateAlbumDto: UpdateAlbumDto) {
     if (!uuidValidate(id)) {
@@ -53,6 +57,7 @@ export class AlbumsController {
     return this.albumsService.update(id, updateAlbumDto);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   @HttpCode(204)
   remove(@Param('id') id: string) {
