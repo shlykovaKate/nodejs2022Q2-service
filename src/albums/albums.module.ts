@@ -14,7 +14,7 @@ import { AuthModule } from 'src/auth/auth.module';
     TypeOrmModule.forFeature([Album]),
     forwardRef(() => TracksModule),
     forwardRef(() => FavoritesModule),
-    AuthModule
+    AuthModule,
   ],
   exports: [AlbumsService],
 })

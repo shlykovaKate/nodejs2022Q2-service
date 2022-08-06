@@ -45,7 +45,7 @@ export class TracksService {
     if (!track) throw new NotFoundException('Track not found');
     await Promise.all([
       this.tracksRepository.delete(id),
-      this.favoritesService.remove(id, 'track')
+      this.favoritesService.remove(id, 'track'),
     ]);
   }
 }

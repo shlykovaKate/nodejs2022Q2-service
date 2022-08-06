@@ -38,7 +38,7 @@ export class FavoritesService {
 
   async findAll() {
     let favorites = await this.favoritesRepository.findOneBy({ id: 1 });
-  
+
     if (!favorites) {
       favorites = await this.create();
     }
@@ -49,13 +49,19 @@ export class FavoritesService {
       albums: Album[];
     } = {
       tracks: await Promise.all(
-        favorites.tracks.map(async (id) => await this.tracksService.findOne(id))
+        favorites.tracks.map(
+          async (id) => await this.tracksService.findOne(id),
+        ),
       ),
       artists: await Promise.all(
-        favorites.artists.map(async (id) => await this.artistsService.findOne(id))
+        favorites.artists.map(
+          async (id) => await this.artistsService.findOne(id),
+        ),
       ),
       albums: await Promise.all(
-        favorites.albums.map(async(id) => await this.albumsService.findOne(id))
+        favorites.albums.map(
+          async (id) => await this.albumsService.findOne(id),
+        ),
       ),
     };
     return returnedFavorites;
@@ -109,7 +115,9 @@ export class FavoritesService {
       }
       case 'artist': {
         const favorites = await this.favoritesRepository.findOneBy({ id: 1 });
-        favorites.artists = favorites.artists.filter((artistId) => artistId !== id);
+        favorites.artists = favorites.artists.filter(
+          (artistId) => artistId !== id,
+        );
         await this.favoritesRepository.save(favorites);
         break;
       }
@@ -122,7 +130,7 @@ export class FavoritesService {
     }
   }
 
-  async removeFavs(){
+  async removeFavs() {
     await this.favoritesRepository.delete(1);
   }
 }

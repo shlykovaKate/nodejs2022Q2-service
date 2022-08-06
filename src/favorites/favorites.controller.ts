@@ -23,7 +23,9 @@ export class FavoritesController {
       throw new BadRequestException("Track's Id is invalid (not uuid)");
     }
     const favorites = await this.favoritesService.findAll();
-    const index = favorites.tracks.findIndex((track) => track && track.id && track.id === id);
+    const index = favorites.tracks.findIndex(
+      (track) => track && track.id && track.id === id,
+    );
     if (index === -1) {
       await this.favoritesService.update(id, 'track');
       return `Track with id: ${id} has been added`;
@@ -39,7 +41,9 @@ export class FavoritesController {
       throw new BadRequestException("Album's Id is invalid (not uuid)");
     }
     const favorites = await this.favoritesService.findAll();
-    const index = favorites.albums.findIndex((album) => album && album.id && album.id === id);
+    const index = favorites.albums.findIndex(
+      (album) => album && album.id && album.id === id,
+    );
     if (index === -1) {
       await this.favoritesService.update(id, 'album');
       return `Album with id: ${id} has been added`;
@@ -55,7 +59,9 @@ export class FavoritesController {
       throw new BadRequestException("Artist's Id is invalid (not uuid)");
     }
     const favorites = await this.favoritesService.findAll();
-    const index = favorites.artists.findIndex((artist) => artist && artist.id && artist.id === id);
+    const index = favorites.artists.findIndex(
+      (artist) => artist && artist.id && artist.id === id,
+    );
     if (index === -1) {
       await this.favoritesService.update(id, 'artist');
       return `Artist with id: ${id} has been added`;

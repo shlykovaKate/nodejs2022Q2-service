@@ -17,7 +17,7 @@ export class AlbumsService {
     @Inject(forwardRef(() => FavoritesService))
     private favoritesService: FavoritesService,
     @InjectRepository(Album)
-    private albumsRepository: Repository<Album>
+    private albumsRepository: Repository<Album>,
   ) {}
 
   async create(createAlbumDto: CreateAlbumDto): Promise<Album> {
@@ -44,7 +44,7 @@ export class AlbumsService {
     if (!album) throw new NotFoundException('Album not found');
     await Promise.all([
       this.albumsRepository.delete(id),
-      this.favoritesService.remove(id, 'album')
+      this.favoritesService.remove(id, 'album'),
     ]);
   }
 }

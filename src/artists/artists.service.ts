@@ -44,7 +44,7 @@ export class ArtistsService {
     if (!track) throw new NotFoundException('Artist not found');
     await Promise.all([
       this.artistsRepository.delete(id),
-      this.favoritesService.remove(id, 'artist')
+      this.favoritesService.remove(id, 'artist'),
     ]);
   }
 }

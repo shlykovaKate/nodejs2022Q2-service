@@ -19,9 +19,7 @@ import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Controller('album')
 export class AlbumsController {
-  constructor(
-    private albumsService: AlbumsService
-  ) {}
+  constructor(private albumsService: AlbumsService) {}
 
   @UseGuards(JwtAuthGuard)
   @Post()

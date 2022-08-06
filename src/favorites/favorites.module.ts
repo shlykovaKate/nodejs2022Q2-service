@@ -10,15 +10,13 @@ import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
   controllers: [FavoritesController],
-  providers: [
-    FavoritesService
-  ],
+  providers: [FavoritesService],
   imports: [
     TypeOrmModule.forFeature([Favorite]),
     AlbumsModule,
     forwardRef(() => TracksModule),
     ArtistsModule,
-    AuthModule
+    AuthModule,
   ],
   exports: [FavoritesService],
 })

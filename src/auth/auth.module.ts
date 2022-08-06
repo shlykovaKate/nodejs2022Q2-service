@@ -12,10 +12,10 @@ import { AuthService } from './auth.service';
     JwtModule.register({
       secret: process.env.JWT_SECRET_KEY || 'SECRET',
       signOptions: {
-        expiresIn: process.env.TOKEN_EXPIRE_TIME || '1h'
-      }
-    })
+        expiresIn: process.env.TOKEN_EXPIRE_TIME || '1h',
+      },
+    }),
   ],
-  exports: [AuthService, JwtModule]
+  exports: [AuthService, JwtModule],
 })
 export class AuthModule {}
