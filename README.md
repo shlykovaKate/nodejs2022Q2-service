@@ -14,33 +14,20 @@ git clone https://github.com/shlykovaKate/nodejs2022Q2-service.git
 ## Running application in docker
 
 ```
-1) git checkout postgres
-2) npm run docker:up
+1) git checkout authentication
+2) docker-compose up --build
 ```
 After starting the app on port (4000 as default) you can open
 in your browser OpenAPI documentation by typing http://localhost:4000/doc/.
-
-## Stopping application in docker
-
-```
-npm run docker:down
-```
-
-## NPM script for vulnerabilities scanning
-
-```
-npm run docker:scan:app
-npm run docker:scan:db
-```
 
 ## Testing
 
 After application running open new terminal and enter:
 
-To run all tests without authorization
+To run all tests with authorization
 
 ```
-npm run test
+npm run test:auth
 ```
 
 ### Auto-fix and format
