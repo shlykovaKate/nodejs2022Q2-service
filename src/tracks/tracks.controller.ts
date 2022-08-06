@@ -9,12 +9,14 @@ import {
   BadRequestException,
   HttpCode,
   NotFoundException,
+  UseGuards,
 } from '@nestjs/common';
 import { TracksService } from './tracks.service';
 import { CreateTrackDto } from './dto/create-track.dto';
 import { UpdateTrackDto } from './dto/update-track.dto';
 import { validate as uuidValidate } from 'uuid';
 import { DataSource } from 'typeorm';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Controller('track')
 export class TracksController {
@@ -23,16 +25,19 @@ export class TracksController {
     private dataSource: DataSource,
   ) {}
 
+  @UseGuards(JwtAuthGuard)
   @Post()
   create(@Body() createTrackDto: CreateTrackDto) {
     return this.tracksService.create(createTrackDto);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get()
   findAll() {
     return this.tracksService.findAll();
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
   async findOne(@Param('id') id: string) {
     if (!uuidValidate(id)) {
@@ -45,6 +50,7 @@ export class TracksController {
     return track;
   }
 
+  @UseGuards(JwtAuthGuard)
   @Put(':id')
   update(@Param('id') id: string, @Body() updateTrackDto: UpdateTrackDto) {
     if (!uuidValidate(id)) {
@@ -53,6 +59,7 @@ export class TracksController {
     return this.tracksService.update(id, updateTrackDto);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   @HttpCode(204)
   remove(@Param('id') id: string) {

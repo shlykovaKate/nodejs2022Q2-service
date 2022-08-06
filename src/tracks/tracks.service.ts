@@ -43,7 +43,9 @@ export class TracksService {
   async remove(id: string) {
     const track = await this.tracksRepository.findOneBy({ id });
     if (!track) throw new NotFoundException('Track not found');
-    await this.tracksRepository.delete(id);
-    await this.favoritesService.remove(id, 'track');
+    await Promise.all([
+      this.tracksRepository.delete(id),
+      this.favoritesService.remove(id, 'track')
+    ]);
   }
 }
