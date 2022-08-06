@@ -6,6 +6,7 @@ import { Artist } from './entities/artist.entity';
 import { TracksModule } from 'src/tracks/tracks.module';
 import { AlbumsModule } from 'src/albums/albums.module';
 import { FavoritesModule } from 'src/favorites/favorites.module';
+import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
   controllers: [ArtistsController],
@@ -15,6 +16,7 @@ import { FavoritesModule } from 'src/favorites/favorites.module';
     forwardRef(() => FavoritesModule),
     forwardRef(() => TracksModule),
     AlbumsModule,
+    AuthModule
   ],
   exports: [ArtistsService],
 })
